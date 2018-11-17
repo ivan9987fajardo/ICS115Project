@@ -20,16 +20,18 @@ import java.net.URLEncoder;
 public class BackgroundWorker extends AsyncTask<String,Void,String> {
     Context context;
     AlertDialog alertDialog;
+
     BackgroundWorker(Context ctx) {
         context = ctx;
     }
+
     String type = "";
 
     @Override
     protected String doInBackground(String... params) {
-        String login_url = "http://ics115project.000webhostapp.com/Register115.php";
-
-        if (params[0].equals("Register")) {
+        String login_url = "http://ics115project.000webhostapp.com/Login115.php";
+        String register_url = "http://ics115project.000webhostapp.com/Register115.php";
+        if (params[0].toString().equals("Register")) {
             try {
                 String Username = params[1];
                 String Password = params[2];
@@ -37,7 +39,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 String Lastname = params[4];
                 String Pic = params[5];
                 type = params[0];
-                URL url = new URL(login_url);
+                URL url = new URL(register_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
@@ -80,9 +82,10 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 alertDialog.setMessage("An Error has occurred");
                 alertDialog.show();
             }
+
         }
 
-        if (params[0].equals("Login")) {
+        if (params[0].toString().equals("Login")) {
             try {
                 String Username = params[1];
                 String Password = params[2];
@@ -128,8 +131,13 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 alertDialog.show();
             }
         }
-            return null;
-        }
+        return null;
+    }
+
+
+
+
+
 
 
         protected void onPreExecute () {
@@ -139,24 +147,41 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         }
 
         @Override
-        protected void onPostExecute (String result){
+        protected void onPostExecute (String result) {
 
-            if(type.equals("Register")) {
-                alertDialog.setTitle("Register");
-                alertDialog.setMessage(result);
-                alertDialog.show();
-                context.startActivity(new Intent(context, MainActivity.class));
+            if (type.equals("Register")) {
+
+                if (result.equals("Success")) {
+                    context.startActivity(new Intent(context, Login.class));
+                }
+                else {
+                    alertDialog = new AlertDialog.Builder(context).create();
+                    alertDialog.setTitle("Error");
+                    alertDialog.setMessage(result);
+                    alertDialog.show();
+                }
             }
-//            if(type.equals("Login")) {
-//                alertDialog.setTitle("Login");
-//                alertDialog.setMessage(result);
-//                alertDialog.show();
-//                context.startActivity(new Intent(context, Home.class));
-//            }
 
+            if(type.equals("Login")) {
 
+                if(result.equals("Success")) {
+                    context.startActivity(new Intent(context, Home.class));
+                }
+
+                else {
+                    alertDialog = new AlertDialog.Builder(context).create();
+                    alertDialog.setTitle("Error");
+                    alertDialog.setMessage(result);
+                    alertDialog.show();
+
+                }
+            }
 
         }
+
+
+
+
 
         @Override
         protected void onProgressUpdate (Void...values){
