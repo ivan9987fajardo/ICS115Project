@@ -71,12 +71,14 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 return result;
             } catch (MalformedURLException e) {
                 e.printStackTrace();
+                alertDialog.dismiss();
                 alertDialog = new AlertDialog.Builder(context).create();
                 alertDialog.setTitle("Error");
                 alertDialog.setMessage("An Error has occurred");
                 alertDialog.show();
             } catch (IOException e) {
                 e.printStackTrace();
+                alertDialog.dismiss();
                 alertDialog = new AlertDialog.Builder(context).create();
                 alertDialog.setTitle("Error");
                 alertDialog.setMessage("An Error has occurred");
@@ -119,12 +121,14 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 return result;
             } catch (MalformedURLException e) {
                 e.printStackTrace();
+                alertDialog.dismiss();
                 alertDialog = new AlertDialog.Builder(context).create();
                 alertDialog.setTitle("Error");
                 alertDialog.setMessage("An Error has occurred");
                 alertDialog.show();
             } catch (IOException e) {
                 e.printStackTrace();
+                alertDialog.dismiss();
                 alertDialog = new AlertDialog.Builder(context).create();
                 alertDialog.setTitle("Error");
                 alertDialog.setMessage("An Error has occurred");
@@ -142,6 +146,9 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
         protected void onPreExecute () {
             alertDialog = new AlertDialog.Builder(context).create();
+            alertDialog.setMessage("Please wait");
+            alertDialog.show();
+            alertDialog.setCancelable(false);
 
 
         }
@@ -153,8 +160,12 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
                 if (result.equals("Success")) {
                     context.startActivity(new Intent(context, Login.class));
+                    alertDialog.dismiss();
+
+
                 }
                 else {
+                    alertDialog.dismiss();
                     alertDialog = new AlertDialog.Builder(context).create();
                     alertDialog.setTitle("Error");
                     alertDialog.setMessage(result);
@@ -166,9 +177,11 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
                 if(result.equals("Success")) {
                     context.startActivity(new Intent(context, Home.class));
+                    alertDialog.dismiss();
                 }
 
                 else {
+                    alertDialog.dismiss();
                     alertDialog = new AlertDialog.Builder(context).create();
                     alertDialog.setTitle("Error");
                     alertDialog.setMessage(result);
